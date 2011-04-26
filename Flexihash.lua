@@ -2,7 +2,7 @@
 
 --Flexihash - A simple consistent hashing implementation for Lua.
 
-require "nix"
+local nix = require "nix"
 
 module('Flexihash', package.seeall)
 
