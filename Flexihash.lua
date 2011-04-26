@@ -7,11 +7,7 @@ require "nix"
 module('Flexihash', package.seeall)
 
 Flexihash_Crc32Hasher = {
-	hash = function(string)
-		print(string, ' => ', nix.crc32(string))
-		return nix.crc32(string)
-		--return nix.crc32(string)
-	end
+	hash = function(string) return nix.crc32(string) end
 }
 
 Flexihash_Md5Hasher = {
@@ -37,8 +33,7 @@ local function _sortPositionTargets(this)
 	-- sort by key (position) if not already
 	if not this._positionToTargetSorted then
 		this._sortedPositions = array_keys_values(this._positionToTarget)
-		table.sort(this._sortedPositions, function(a, b) return tonumber(a, 16) > tonumber(a, 16) end)
-		print_r(this._sortedPositions)
+		table.sort(this._sortedPositions)
 		this._positionToTargetSorted = true
 	end
 end
@@ -135,7 +130,7 @@ local function lookupList(this, resource, requestedCount)
 	end
 
 	-- hash resource to a position
-	local resourcePosition = tonumber(this._hasher(resource), 16)
+	local resourcePosition = this._hasher(resource)
 
 	local results, _results = {}, {}
 	local collect = false;
@@ -145,7 +140,7 @@ local function lookupList(this, resource, requestedCount)
 	-- search values above the resourcePosition
 	for i,key in ipairs(this._sortedPositions) do
 		-- start collecting targets after passing resource position
-		if (not collect) and (tonumber(key, 16) > resourcePosition) then
+		if (not collect) and key > resourcePosition then
 			collect = true
 		end
 
@@ -153,9 +148,6 @@ local function lookupList(this, resource, requestedCount)
 
 		-- only collect the first instance of any target
 		if collect and (not _results[value]) then
-		print_r(key)
-		print_r(value)
-		do break end
 			table.insert(results, value)
 			_results[value] = true
 		end
