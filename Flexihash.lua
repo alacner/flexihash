@@ -181,7 +181,7 @@ end
 -- @return string
 --]]
 local function lookup(this, resource)
-	targets = this.lookupList(resource, 1)
+	targets = this.lookupList(this, resource, 1)
 	if not #targets == 0 then
 		return false, 'No targets exist'
 	end
