@@ -144,7 +144,7 @@ local function lookupList(this, resource, requestedCount)
 			collect = true
 		end
 
-		value = this._positionToTarget[key]
+		local value = this._positionToTarget[key]
 
 		-- only collect the first instance of any target
 		if collect and (not _results[value]) then
@@ -159,7 +159,7 @@ local function lookupList(this, resource, requestedCount)
 
 	-- loop to start - search values below the resourcePosition
 	for i,key in ipairs(this._sortedPositions) do
-		value = this._positionToTarget[key]
+		local value = this._positionToTarget[key]
 
 		if not _results[value] then
 			table.insert(results, value)
@@ -181,8 +181,8 @@ end
 -- @return string
 --]]
 local function lookup(this, resource)
-	targets = this.lookupList(this, resource, 1)
-	if not #targets == 0 then
+	local targets = this.lookupList(this, resource, 1)
+	if #targets == 0 then
 		return false, 'No targets exist'
 	end
 	return targets[1]
